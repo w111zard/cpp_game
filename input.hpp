@@ -1,0 +1,13 @@
+#ifndef INPUT_HPP
+#define INPUT_HPP
+
+const int INPUT_ARROW_LEFT = 68;
+const int INPUT_ARROW_RIGHT = 67;
+const int INPUT_ARROW_UP = 65;
+const int INPUT_ARROW_DOWN = 66;
+
+void input_setup();
+void input_restore();
+int get_key();
+
+#endif // INPUT_HPP
