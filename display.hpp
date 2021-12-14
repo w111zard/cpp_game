@@ -3,6 +3,8 @@
 
 #include <string>
 
-void display_level(std::string *array, size_t row_size, size_t col_size);
+#include "level.hpp"
+
+void display_level(game_object_t level[LEVEL_HEIGHT][LEVEL_WIDTH]);
 
 #endif // DISPLAY_HPP

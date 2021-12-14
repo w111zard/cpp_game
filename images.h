@@ -1,11 +1,14 @@
 #ifndef IMAGES_H
 #define IMAGES_H
 
-const char SPACE_IMG = ' ';
-const char PLAYER_IMG = 'x';
-const char WALL_IMG = '#';
-const char STONE_IMG = '@';
-const char COIN_IMG = '$';
-const char ENEMY_IMG = '!';
+enum Images
+{
+    SPACE_IMAGE =   ' ',
+    WALL_IMAGE =    '#',
+    STONE_IMAGE =   '@',
+    PLAYER_IMAGE =  'x',
+    ENEMY_IMAGE =   '!',
+    COIN_IMAGE =    '$'
+};
 
 #endif // IMAGES_H

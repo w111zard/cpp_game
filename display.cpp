@@ -2,23 +2,18 @@
 #include <iostream>
 
 #include "display.hpp"
-#include "images.h"
+#include "game_object_t.h"
+#include "level.hpp"
 
-void display_level(std::string *array, size_t row_size, size_t col_size)
+void display_level(game_object_t level[LEVEL_HEIGHT][LEVEL_WIDTH])
 {
-   for (size_t y = 0; y < row_size; ++y)
+   for (size_t y = 0; y < LEVEL_HEIGHT; ++y)
    {
-       for (size_t x = 0; x < col_size; ++x)
+       for (size_t x = 0; x < LEVEL_WIDTH; ++x)
        {
-           if (array[y][x] == PLAYER_IMG)
-           {
-               std::cout << "\033[1;31m" << array[y][x] << "\033[0m ";
-           }
-           else
-           {
-               std::cout << array[y][x] << " ";
-           }
+           std::cout << level[y][x].color << " ";
        }
+
        std::cout << std::endl;
    }
 }

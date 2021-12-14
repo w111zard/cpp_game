@@ -3,3 +3,4 @@ my_project
 my_project.pro.user*
 Makefile
 .qmake.stash
+*.*.autosave

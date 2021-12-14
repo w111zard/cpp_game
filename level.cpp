@@ -2,42 +2,45 @@
 
 #include "level.hpp"
 #include "vector_2d.h"
-#include "images.h"
-#include "player.hpp"
+#include "game_object_t.h"
+#include "game_objects_list.h"
 
-std::string level[LEVEL_HEIGHT];
+game_object_t level[LEVEL_HEIGHT][LEVEL_WIDTH];
 
-char level_get(Vector2D pos)
+game_object_t level_get(Vector2D pos)
 {
     return level[pos.y][pos.x];
 }
 
-void level_set(Vector2D pos, char obj)
+void level_set(Vector2D pos, game_object_t obj)
 {
     level[pos.y][pos.x] = obj;
 }
 
 void level_delete(Vector2D pos)
 {
-    level_set(pos, SPACE_IMG);
+    level_set(pos, SPACE_OBJ);
 }
 
 void level_clear()
 {
-    for (size_t i = 0; i < LEVEL_HEIGHT; ++i)
+    for (int y = 0; y < LEVEL_HEIGHT; ++y)
     {
-        level[i] = std::string(LEVEL_WIDTH, SPACE_IMG);
+        for (int x = 0; x < LEVEL_WIDTH; ++x)
+        {
+            level_delete(Vector2D {x, y});
+        }
     }
 }
 
-bool level_is_equal(Vector2D pos, char obj)
+bool level_is_equal(Vector2D pos, game_object_t obj)
 {
-    return level_get(pos) == obj;
+    return level_get(pos).img == obj.img;
 }
 
 void level_move(Vector2D pos, Vector2D delta)
 {
-    char obj = level_get(pos);
+    game_object_t obj = level_get(pos);
     level_delete(pos);
     Vector2D new_pos = {pos.x + delta.x, pos.y + delta.y};
     level_set(new_pos, obj);
@@ -49,8 +52,6 @@ void level_generate()
 
     for (size_t y = 0; y < LEVEL_HEIGHT; ++y)
     {
-        level[y] = std::string(LEVEL_WIDTH, SPACE_IMG);
-
         for (size_t x = 0; x < LEVEL_WIDTH; ++x)
         {
             // draw borders
@@ -59,7 +60,7 @@ void level_generate()
                     || (x == (LEVEL_WIDTH - 1))
                     || (y == (LEVEL_HEIGHT - 1)))
             {
-                level[y][x] = WALL_IMG;
+                level[y][x] = WALL_OBJ;
             }
 
             else
@@ -69,15 +70,15 @@ void level_generate()
                 switch (value)
                 {
                     case 0:
-                        level[y][x] =  WALL_IMG;
+                        level[y][x] =  WALL_OBJ;
                         break;
 
                    case 1:
-                        level[y][x] = STONE_IMG;
+                        level[y][x] = STONE_OBJ;
                         break;
 
                     default:
-                        level[y][x] = SPACE_IMG;
+                        level[y][x] = SPACE_OBJ;
                         break;
                 }
             }
@@ -85,7 +86,7 @@ void level_generate()
     }
 }
 
-void level_add_randomly(char obj)
+void level_add_randomly(game_object_t obj)
 {
     int x = rand() % (LEVEL_WIDTH - 2) + 1;
     int y = rand() % (LEVEL_HEIGHT - 2) + 1;
