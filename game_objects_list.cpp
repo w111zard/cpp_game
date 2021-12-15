@@ -40,6 +40,6 @@ game_object_t PLAYER_GAME_OBJECT =
 game_object_t ENEMY_GAME_OBJECT =
 {
     ENEMY_IMAGE,
-    COLOR_CYAN,
+    COLOR_YELLOW,
     COLOR_BLACK
 };

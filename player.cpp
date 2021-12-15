@@ -7,8 +7,8 @@
 // player coordinates
 Vector2D player_pos = {3, 3};
 
-int player_collected_coins = 0;
-int player_coins_to_win = 10;
+size_t player_collected_coins = 0;
+size_t player_coins_to_win = 10;
 
 bool player_is_alive;
 

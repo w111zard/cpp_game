@@ -7,8 +7,8 @@
 // player coordinates
 extern Vector2D player_pos;
 
-extern int player_collected_coins;
-extern int player_coins_to_win;
+extern size_t player_collected_coins;
+extern size_t player_coins_to_win;
 
 
 extern bool player_is_alive;

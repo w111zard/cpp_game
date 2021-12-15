@@ -16,7 +16,6 @@ void display_level(game_object_t level[LEVEL_HEIGHT][LEVEL_WIDTH])
            std::cout << "m";
            std::cout << char(level[y][x].image);
            std::cout << "\033[0m ";
-
        }
 
        std::cout << std::endl;
