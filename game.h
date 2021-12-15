@@ -17,5 +17,7 @@ void game_add_enemies();
 void game_add_coins();
 void game_end();
 void game_show_stat();
+void game_passed_screen();
+void game_over_screen();
 
 #endif // GAME_H

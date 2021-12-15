@@ -1,4 +1,5 @@
 #include <string>
+#include <unistd.h>
 
 #include "level.hpp"
 #include "vector_2d.h"
@@ -134,3 +135,4 @@ void level_add_randomly(game_object_t obj)
 
     level_set(pos, obj);
 }
+

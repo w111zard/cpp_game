@@ -9,6 +9,7 @@
 #include "input.hpp"
 #include "enemy.h"
 #include "algorithm.h"
+#include "display.hpp"
 
 void game_move_player()
 {
@@ -161,26 +162,33 @@ void game_add_coins()
     }
 }
 
+void game_over_screen()
+{
+    std::cout << "GAME OVER" << std::endl;
+}
+
+void game_passed_screen()
+{
+    std::cout << "GAME PASSED" << std::endl;
+}
+
 void game_end()
 {
-    system("clear");
-
     if (player_is_alive)
     {
-        std::cout << "YOU WIN!" << std::endl;
+        game_passed_screen();
     }
 
     else
     {
-        std::cout << "GAME OVER" << std::endl;
+        game_over_screen();
     }
 
     sleep(3);
-
-    system("clear");
 }
 
 void game_show_stat()
 {
     std::cout << "Coins: " << player_collected_coins << "/" << player_coins_to_win << std::endl;
 }
+
