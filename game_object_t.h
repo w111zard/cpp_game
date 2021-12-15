@@ -3,12 +3,16 @@
 
 #include <string>
 
-struct game_object
+#include "images.h"
+#include "colors.h"
+
+struct GameObject
 {
-    char img;
-    std::string color;
+    char image;
+    int foreground_color;
+    int background_color;
 };
 
-typedef game_object game_object_t;
+typedef GameObject game_object_t;
 
 #endif // GAME_OBJECT_T_H

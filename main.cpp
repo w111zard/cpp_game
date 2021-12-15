@@ -19,7 +19,10 @@ int main()
     input_setup();
 
     level_generate();
+
     display_level(level);
+
+    std::cout << "Here" << std::endl;
 
     sleep(10000);
 

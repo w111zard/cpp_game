@@ -7,6 +7,7 @@ SOURCES += \
         algorithm.cpp \
         display.cpp \
         enemy.cpp \
+        game_objects_list.cpp \
         input.cpp \
         level.cpp \
         main.cpp \

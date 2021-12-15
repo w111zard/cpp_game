@@ -7,19 +7,19 @@
 
 game_object_t level[LEVEL_HEIGHT][LEVEL_WIDTH];
 
-game_object_t level_get(Vector2D pos)
+game_object_t level_get(vector_2d_t pos)
 {
     return level[pos.y][pos.x];
 }
 
-void level_set(Vector2D pos, game_object_t obj)
+void level_set(vector_2d_t pos, game_object_t obj)
 {
     level[pos.y][pos.x] = obj;
 }
 
 void level_delete(Vector2D pos)
 {
-    level_set(pos, SPACE_OBJ);
+    level_set(pos, SPACE_GAME_OBJECT);
 }
 
 void level_clear()
@@ -33,16 +33,16 @@ void level_clear()
     }
 }
 
-bool level_is_equal(Vector2D pos, game_object_t obj)
+bool level_is_equal(vector_2d_t pos, game_object_t obj)
 {
-    return level_get(pos).img == obj.img;
+    return level_get(pos).image == obj.image;
 }
 
 void level_move(Vector2D pos, Vector2D delta)
 {
     game_object_t obj = level_get(pos);
     level_delete(pos);
-    Vector2D new_pos = {pos.x + delta.x, pos.y + delta.y};
+    vector_2d_t new_pos = {pos.x + delta.x, pos.y + delta.y};
     level_set(new_pos, obj);
 }
 
@@ -54,13 +54,16 @@ void level_generate()
     {
         for (size_t x = 0; x < LEVEL_WIDTH; ++x)
         {
+            vector_2d_t pos = {int(x), int(y)};
+
             // draw borders
-            if ((x == 0)
-                    || (y == 0)
-                    || (x == (LEVEL_WIDTH - 1))
-                    || (y == (LEVEL_HEIGHT - 1)))
+            if ((pos.x == 0)
+                    || (pos.y == 0)
+                    || (pos.x == (LEVEL_WIDTH - 1))
+                    || (pos.y == (LEVEL_HEIGHT - 1)))
             {
-                level[y][x] = WALL_OBJ;
+                //level_set(pos, WALL_GAME_OBJECT);
+                level[y][x] = WALL_GAME_OBJECT;
             }
 
             else
@@ -70,15 +73,18 @@ void level_generate()
                 switch (value)
                 {
                     case 0:
-                        level[y][x] =  WALL_OBJ;
+                        //level_set(pos, WALL_GAME_OBJECT);
+                        level[y][x] = WALL_GAME_OBJECT;
                         break;
 
                    case 1:
-                        level[y][x] = STONE_OBJ;
+                        //level_set(pos, STONE_GAME_OBJECT);
+                        level[y][x] = STONE_GAME_OBJECT;
                         break;
 
                     default:
-                        level[y][x] = SPACE_OBJ;
+                        //level_set(pos, SPACE_GAME_OBJECT);
+                        level[y][x] = SPACE_GAME_OBJECT;
                         break;
                 }
             }
