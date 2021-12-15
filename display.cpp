@@ -21,3 +21,8 @@ void display_level(game_object_t level[LEVEL_HEIGHT][LEVEL_WIDTH])
        std::cout << std::endl;
    }
 }
+
+void display_set_size(size_t h, size_t w)
+{
+    std::cout << "\e[8;" << std::to_string(h) << ";" << std::to_string(w) << "t";
+}

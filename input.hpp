@@ -5,6 +5,7 @@ const int INPUT_ARROW_LEFT = 68;
 const int INPUT_ARROW_RIGHT = 67;
 const int INPUT_ARROW_UP = 65;
 const int INPUT_ARROW_DOWN = 66;
+const int INPUT_ENTER = 10;
 
 void input_setup();
 void input_restore();

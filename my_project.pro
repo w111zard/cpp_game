@@ -12,6 +12,7 @@ SOURCES += \
         input.cpp \
         level.cpp \
         main.cpp \
+        menu.cpp \
         player.cpp \
         vector_2d.cpp
 
@@ -28,5 +29,6 @@ HEADERS += \
     images.h \
     input.hpp \
     level.hpp \
+    menu.h \
     player.hpp \
     vector_2d.h
