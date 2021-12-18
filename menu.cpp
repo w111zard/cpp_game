@@ -1,56 +1,90 @@
-#include <iostream>
 #include <string>
+#include <iostream>
 
 #include "menu.h"
+#include "input.hpp"
 
-const size_t MENU_ELEMS_COUNT = 2;
-
-std::string menu_elems[MENU_ELEMS_COUNT] =
+void menu_show(std::string items[], size_t items_count, int cursor_pos)
 {
-    "New Game",
-    "Exit"
-};
-
-int menu_cursor_pos = 0;
-
-void menu_show()
-{
-    for (size_t elem = 0; elem < MENU_ELEMS_COUNT; ++elem)
+    for (size_t i = 0; i < items_count; ++i)
     {
-        if (elem == menu_cursor_pos)
+        if (i == cursor_pos)
         {
-            std::cout << ">" << menu_elems[elem] << "<" << std::endl;
+            std::cout << ">" << items[i] << "<" << std::endl;
         }
 
         else
         {
-            std::cout << " " << menu_elems[elem] << " " << std::endl;
+            std::cout << " " << items[i] << std::endl;
         }
     }
 }
 
-void menu_cursor_down()
+void menu_level_mod()
 {
-    if (menu_cursor_pos + 1 < MENU_ELEMS_COUNT)
+    while (true)
     {
-        ++menu_cursor_pos;
-    }
 
-    else
-    {
-        menu_cursor_pos = 0;
     }
 }
 
-void menu_cursor_up()
+void menu_main()
 {
-    if (menu_cursor_pos - 1 >= 0)
+    int cursor_pos = 0;
+    const size_t items_count = 2;
+    std::string items[items_count] =
     {
-        --menu_cursor_pos;
-    }
+      "Start new game",
+      "Exit"
+    };
 
-    else
+    while (true)
     {
-        menu_cursor_pos = MENU_ELEMS_COUNT - 1;
+        menu_show(items, items_count, cursor_pos);
+
+        int key = get_key();
+
+        if (key == INPUT_ARROW_UP)
+        {
+            if (cursor_pos - 1 >= 0)
+            {
+                --cursor_pos;
+            }
+        }
+
+        else if(key == INPUT_ARROW_DOWN)
+        {
+            if (cursor_pos + 1 < items_count)
+            {
+                ++cursor_pos;
+            }
+        }
+
+        else if(key == INPUT_ENTER)
+        {
+            if (cursor_pos == 0)
+            {
+                return;
+            }
+
+            else
+            {
+                // close terminal
+                // [doesn't work]
+                exit(0);
+            }
+        }
+
+        system("clear");
     }
+}
+
+void menu_settings(size_t &level_h, size_t &level_w, size_t &enemies_count)
+{
+    std::cout << "Enter level height: ";
+    std::cin >> level_h;
+    std::cout << "Enter level width: ";
+    std::cin >> level_w;
+    std::cout << "Enter enemies count: ";
+    std::cin >> enemies_count;
 }

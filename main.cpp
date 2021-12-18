@@ -24,25 +24,26 @@ int main()
 
     while (true)
     {
-        size_t h, w, n;
-        std::cout << "Level height: ";
-        std::cin >> h;
-        std::cout << "Level width: ";
-        std::cin >> w;
-        std::cout << "Enemies number: ";
-        std::cin >> n;
+        input_setup();
+        menu_main();
+
+        system("clear");
+
+        input_restore();
+        menu_settings(level_h, level_w, enemies_count);
+
+
+        system("clear");
 
         input_setup();
 
         // LEVEL SETUP
-        level_set_size(h, w);
         level_create();
         level_generate();
 
         // GAME OBJECTS SETUP
         game_add_coins();
 
-        enemies_set_count(n);
         game_add_enemies();
 
         game_add_player();
