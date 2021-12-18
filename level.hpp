@@ -5,10 +5,14 @@
 #include "vector_2d.h"
 #include "game_object_t.h"
 
-const int LEVEL_WIDTH = 35;
-const int LEVEL_HEIGHT = 35;
+extern game_object_t **level;
 
-extern game_object_t level[LEVEL_HEIGHT][LEVEL_WIDTH];
+extern size_t level_h;
+extern size_t level_w;
+
+void level_set_size(size_t h, size_t w);
+void level_create();
+void level_free_memory();
 
 game_object_t level_get(vector_2d_t pos);
 game_object_t level_get(size_t x, size_t y);

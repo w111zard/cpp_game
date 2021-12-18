@@ -6,7 +6,37 @@
 #include "game_object_t.h"
 #include "game_objects_list.h"
 
-game_object_t level[LEVEL_HEIGHT][LEVEL_WIDTH];
+game_object_t **level;
+size_t level_h;
+size_t level_w;
+
+void level_set_size(size_t h, size_t w)
+{
+    level_h = h;
+    level_w = w;
+}
+
+
+void level_create()
+{
+    level = new game_object_t*[level_h];
+
+    for (size_t i = 0; i < level_h; ++i)
+    {
+        level[i] = new game_object_t[level_w];
+    }
+}
+
+void level_free_memory()
+{
+    for (size_t i = 0; i < level_h; ++i)
+    {
+        delete[] level[i];
+    }
+
+    delete[] level;
+    level = nullptr;
+}
 
 
 // LEVEL_GET
@@ -35,9 +65,9 @@ void level_set(size_t x, size_t y, game_object_t obj)
 // LEVEL_FILL
 void level_fill(game_object_t obj)
 {
-    for (size_t y = 0; y < LEVEL_HEIGHT; ++y)
+    for (size_t y = 0; y < level_h; ++y)
     {
-        for (size_t x = 0; x < LEVEL_WIDTH; ++x)
+        for (size_t x = 0; x < level_w; ++x)
         {
             level_set(x, y, obj);
         }
@@ -87,16 +117,16 @@ void level_generate()
 {
     srand(time(NULL));
 
-    for (size_t y = 0; y < LEVEL_HEIGHT; ++y)
+    for (size_t y = 0; y < level_h; ++y)
     {
-        for (size_t x = 0; x < LEVEL_WIDTH; ++x)
+        for (size_t x = 0; x < level_w; ++x)
         {
 
             // draw borders
             if ((x == 0)
                     || (y == 0)
-                    || (x == (LEVEL_WIDTH - 1))
-                    || (y == (LEVEL_HEIGHT - 1)))
+                    || (x == (level_w - 1))
+                    || (y == (level_h - 1)))
             {
                 level_set(x, y, WALL_GAME_OBJECT);
             }
@@ -128,8 +158,8 @@ void level_generate()
 // LEVEL_ADD_RANDOMLY
 void level_add_randomly(game_object_t obj)
 {
-    int x = rand() % (LEVEL_WIDTH - 2) + 1;
-    int y = rand() % (LEVEL_HEIGHT - 2) + 1;
+    int x = rand() % (level_w - 2) + 1;
+    int y = rand() % (level_h - 2) + 1;
 
     Vector2D pos = {x, y};
 

@@ -2,6 +2,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/select.h>
 
 #include "input.hpp"
 
@@ -19,6 +20,7 @@ void input_setup()
 
 void input_restore()
 {
+    fcntl(0, F_SETFL, fcntl(0, F_GETFL) & ~O_NONBLOCK);
     tcsetattr( STDIN_FILENO, TCSANOW, &oldt );
 }
 

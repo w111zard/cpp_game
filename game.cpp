@@ -74,7 +74,7 @@ void game_move_player()
 
 void game_move_enemies()
 {
-    for (size_t i = 0; i < ENEMIES_COUNT; ++i)
+    for (size_t i = 0; i < enemies_count; ++i)
     {
         vector_2d_t new_enemy_pos =
         {
@@ -125,15 +125,24 @@ void game_move_enemies()
 
 void game_add_enemies()
 {
+    enemies_pos = new vector_2d_t[enemies_count];
+    enemies_movement_directions = new vector_2d_t[enemies_count];
+
     vector_2d_t movement_directions[4] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
 
-    for (size_t i = 0; i < ENEMIES_COUNT; ++i)
+    for (size_t i = 0; i < enemies_count; ++i)
     {
         int value = rand() % 4;
         enemies_movement_directions[i] = movement_directions[value];
 
-        int x = rand() % (LEVEL_WIDTH - 2) + 1;
-        int y = rand() % (LEVEL_HEIGHT - 2) + 1;
+        int x = rand() % (level_w - 2) + 1;
+        int y = rand() % (level_h - 2) + 1;
+
+        while(level_get(x, y).image != SPACE_IMAGE)
+        {
+            x = rand() % (level_w - 2) + 1;
+            y = rand() % (level_h - 2) + 1;
+        }
 
         enemies_pos[i].x = x;
         enemies_pos[i].y = y;
@@ -146,8 +155,15 @@ void game_add_player()
 {
     player_setup();
 
-    int x = rand() % (LEVEL_WIDTH - 2) + 1;
-    int y = rand() % (LEVEL_HEIGHT - 2) + 1;
+    int x = rand() % (level_w - 2) + 1;
+    int y = rand() % (level_h - 2) + 1;
+
+    while (level_get(x, y).image != SPACE_IMAGE)
+    {
+        x = rand() % (level_w - 2) + 1;
+        y = rand() % (level_h - 2) + 1;
+    }
+
     player_pos.x = x;
     player_pos.y = y;
     level_set(player_pos, PLAYER_GAME_OBJECT);

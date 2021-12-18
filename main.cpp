@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
+#include <limits>
 
 #include "display.hpp"
 #include "level.hpp"
@@ -18,57 +19,36 @@
 
 int main()
 {
-    display_set_size(45, 75);
-    input_setup();
+    display_set_size(75, 120);
     srand(time(NULL));
-
 
     while (true)
     {
-        // MENU
-        bool is_game_on = false;
-        while (!is_game_on)
-        {
-            menu_show();
+        size_t h, w, n;
+        std::cout << "Level height: ";
+        std::cin >> h;
+        std::cout << "Level width: ";
+        std::cin >> w;
+        std::cout << "Enemies number: ";
+        std::cin >> n;
 
-            int key = get_key();
+        input_setup();
 
-            if (key == INPUT_ARROW_UP)
-            {
-                menu_cursor_up();
-            }
-
-            else if (key == INPUT_ARROW_DOWN)
-            {
-                menu_cursor_down();
-            }
-
-            else if (key == INPUT_ENTER)
-            {
-                if (menu_cursor_pos == 0)
-                {
-                    is_game_on = true;
-                }
-
-                else if (menu_cursor_pos == 1)
-                {
-                    return 0;
-                }
-            }
-
-            std::cout << key << std::endl;
-
-            system("clear");
-        }
-
-        // GAME SETUP
+        // LEVEL SETUP
+        level_set_size(h, w);
+        level_create();
         level_generate();
 
-        game_add_enemies();
+        // GAME OBJECTS SETUP
         game_add_coins();
+
+        enemies_set_count(n);
+        game_add_enemies();
+
         game_add_player();
 
-        display_level(level);
+
+        display_level(level, level_h, level_w);
 
         // GAME PROCESS
         while (player_is_alive && (player_collected_coins < player_coins_to_win))
@@ -76,16 +56,24 @@ int main()
             game_move_player();
 
             system("clear");
-            display_level(level);
+            display_level(level, level_h, level_w);
             game_show_stat();
 
             game_move_enemies();
         }
 
         game_end();
-    }
+        input_restore();
+        level_free_memory();
+        enemies_free_memory();
+        system("clear");
 
-    input_restore();
+        // CLEARING CIN BUFFER
+        std::cout << "Press enter to continue..." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("clear");
+    }
 
     return 0;
 }

@@ -5,11 +5,11 @@
 #include "game_object_t.h"
 #include "level.hpp"
 
-void display_level(game_object_t level[LEVEL_HEIGHT][LEVEL_WIDTH])
+void display_level(game_object_t **level, size_t h, size_t w)
 {
-   for (size_t y = 0; y < LEVEL_HEIGHT; ++y)
+   for (size_t y = 0; y < h; ++y)
    {
-       for (size_t x = 0; x < LEVEL_WIDTH; ++x)
+       for (size_t x = 0; x < w; ++x)
        {
            std::cout << "\033[1;3";
            std::cout << std::to_string(level[y][x].foreground_color);
