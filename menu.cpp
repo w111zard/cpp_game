@@ -4,18 +4,19 @@
 #include "menu.h"
 #include "input.hpp"
 
-void menu_show(std::string items[], size_t items_count, int cursor_pos)
+
+void menu_show(menu_item_t items[], size_t items_count, int cursor_pos)
 {
     for (size_t i = 0; i < items_count; ++i)
     {
         if (i == cursor_pos)
         {
-            std::cout << ">" << items[i] << "<" << std::endl;
+            std::cout << ">" << items[i].name << "<" << std::endl;
         }
 
         else
         {
-            std::cout << " " << items[i] << std::endl;
+            std::cout << " " << items[i].name << std::endl;
         }
     }
 }
@@ -28,19 +29,13 @@ void menu_level_mod()
     }
 }
 
-void menu_main()
+bool menu_main(menu_item_t items[], size_t size)
 {
     int cursor_pos = 0;
-    const size_t items_count = 2;
-    std::string items[items_count] =
-    {
-      "Start new game",
-      "Exit"
-    };
 
     while (true)
     {
-        menu_show(items, items_count, cursor_pos);
+        menu_show(items, size, cursor_pos);
 
         int key = get_key();
 
@@ -54,7 +49,7 @@ void menu_main()
 
         else if(key == INPUT_ARROW_DOWN)
         {
-            if (cursor_pos + 1 < items_count)
+            if (cursor_pos + 1 < size)
             {
                 ++cursor_pos;
             }
@@ -62,17 +57,7 @@ void menu_main()
 
         else if(key == INPUT_ENTER)
         {
-            if (cursor_pos == 0)
-            {
-                return;
-            }
-
-            else
-            {
-                // close terminal
-                // [doesn't work]
-                exit(0);
-            }
+            items[cursor_pos].handler();
         }
 
         system("clear");

@@ -17,15 +17,31 @@
 #include "game.h"
 #include "menu.h"
 
+bool start_game()
+{
+    std::cout << "game started!!" << std::endl;
+}
+
+bool exit_game()
+{
+    exit(0);
+}
+
 int main()
 {
     display_set_size(75, 120);
     srand(time(NULL));
 
+    menu_item_t items[] =
+    {
+      {.name = "Start game", .handler = start_game},
+      {.name = "Exit game", .handler = exit_game}
+    };
+
     while (true)
     {
         input_setup();
-        menu_main();
+        menu_main(items, 2);
 
         system("clear");
 
