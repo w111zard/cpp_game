@@ -29,25 +29,37 @@ bool exit_game()
 
 int main()
 {
-    display_set_size(75, 120);
+    display_set_size(150, 150);
     srand(time(NULL));
 
-    menu_item_t items[] =
+    menu_item_t menu_main_items[] =
     {
-      {.name = "Start game", .handler = start_game},
+      {.name = "New game", .handler = start_game},
       {.name = "Exit game", .handler = exit_game}
     };
 
     while (true)
     {
         input_setup();
-        menu_main(items, 2);
+        menu_enter(menu_main_items, 2);
 
         system("clear");
 
         input_restore();
-        menu_settings(level_h, level_w, enemies_count);
+        std::cout << "Level height: ";
+        std::cin >> level_h;
 
+        std::cout << "Level width: ";
+        std::cin >> level_w;
+
+        std::cout << "Enemies count: ";
+        std::cin >> enemies_count;
+
+        //level_h = 100;
+        //level_w = 100;
+        //enemies_count = 0;
+
+        //sleep(3);
 
         system("clear");
 

@@ -21,15 +21,7 @@ void menu_show(menu_item_t items[], size_t items_count, int cursor_pos)
     }
 }
 
-void menu_level_mod()
-{
-    while (true)
-    {
-
-    }
-}
-
-bool menu_main(menu_item_t items[], size_t size)
+bool menu_enter(menu_item_t items[], size_t size)
 {
     int cursor_pos = 0;
 
@@ -57,19 +49,9 @@ bool menu_main(menu_item_t items[], size_t size)
 
         else if(key == INPUT_ENTER)
         {
-            items[cursor_pos].handler();
+            return items[cursor_pos].handler();
         }
 
         system("clear");
     }
-}
-
-void menu_settings(size_t &level_h, size_t &level_w, size_t &enemies_count)
-{
-    std::cout << "Enter level height: ";
-    std::cin >> level_h;
-    std::cout << "Enter level width: ";
-    std::cin >> level_w;
-    std::cout << "Enter enemies count: ";
-    std::cin >> enemies_count;
 }

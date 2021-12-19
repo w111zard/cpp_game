@@ -13,7 +13,6 @@ struct MenuItem
 typedef struct MenuItem menu_item_t;
 
 void menu_show(menu_item_t items[], size_t items_count, int cursor_pos);
-bool menu_main(menu_item_t items[], size_t size);
-void menu_settings(size_t &level_h, size_t &level_w, size_t &enemies_count);
+bool menu_enter(menu_item_t items[], size_t size);
 
 #endif // MENU_H

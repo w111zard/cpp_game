@@ -36,4 +36,6 @@ void level_add_randomly(game_object_t obj);
 
 void level_fill(game_object_t obj);
 
+bool level_load();
+
 #endif // LEVEL_HPP

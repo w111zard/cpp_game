@@ -166,3 +166,7 @@ void level_add_randomly(game_object_t obj)
     level_set(pos, obj);
 }
 
+bool level_load()
+{
+
+}

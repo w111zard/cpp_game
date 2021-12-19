@@ -14,11 +14,11 @@ void display_level(game_object_t **level, size_t h, size_t w)
            std::cout << "\033[1;3";
            std::cout << std::to_string(level[y][x].foreground_color);
            std::cout << "m";
-           std::cout << char(level[y][x].image);
-           std::cout << "\033[0m ";
+           std::cout << char(level[y][x].image) << " ";
+           std::cout << "\033[0m";
        }
 
-       std::cout << std::endl;
+       std::cout << "\n";
    }
 }
 
