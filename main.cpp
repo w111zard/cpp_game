@@ -64,7 +64,12 @@ bool load_level_from_file()
     system("clear");
 
     // . means to show files from current directory
-    file_system_show_txt_files(".");
+    char **result = file_system_show_txt_files(".");
+
+    for (int index = 0; result[index] != NULL; ++index)
+    {
+        std::cout << result[index] << std::endl;
+    }
 
     std::cout << "\n\nFile name: ";
     std::string file_name;
