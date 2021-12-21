@@ -4,3 +4,5 @@ my_project.pro.user*
 Makefile
 .qmake.stash
 *.*.autosave
+my_level.txt
+*.txt
