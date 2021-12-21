@@ -72,8 +72,22 @@ bool genereate_random_level()
     std::cout << "Level height: ";
     std::cin >> level_h;
 
+    if (level_h < 3 || level_h > 75)
+    {
+        std::cout << "Error: uncorrect level size" << std::endl;
+        sleep(3);
+        return genereate_random_level();
+    }
+
     std::cout << "Level width: ";
     std::cin >> level_w;
+
+    if (level_w < 3 || level_w > 75)
+    {
+        std::cout << "Error: uncorrect level size" << std::endl;
+        sleep(3);
+        return genereate_random_level();
+    }
 
     std::cout << "Enemies count: ";
     std::cin >> enemies_count;
@@ -109,7 +123,7 @@ bool load_level_from_file()
 
         if (file_w < 3) // expection error
         {
-            std::cout << "Error: Level width must be > 3";
+            std::cout << "Error: Level width must be > 3" << std::endl;
             sleep(3);
             return load_level_from_file();
         }
@@ -119,7 +133,7 @@ bool load_level_from_file()
         {
             if (line.length() != file_w)
             {
-                std::cout << "Error: level width must be same in all rows";
+                std::cout << "Error: level width must be same in all rows" << std::endl;
                 sleep(3);
                 return load_level_from_file();
             }
@@ -128,7 +142,7 @@ bool load_level_from_file()
 
         if (file_h < 3)
         {
-            std::cout << "Error: level height must be > 3";
+            std::cout << "Error: level height must be > 3" << std::endl;
             sleep(3);
             return load_level_from_file();
         }
