@@ -17,6 +17,7 @@
 #include "game_object_t.h"
 #include "game.h"
 #include "menu.h"
+#include "file_system.h"
 
 bool start_game()
 {
@@ -88,7 +89,10 @@ bool load_level_from_file()
     input_restore();
     system("clear");
 
-    std::cout << "File name: ";
+    // . means to show files from current directory
+    file_system_show_txt_files(".");
+
+    std::cout << "\n\nFile name: ";
     std::string file_name;
     std::cin >> file_name;
 
@@ -192,7 +196,7 @@ bool level_setup()
 
 int main()
 {
-    display_set_size(75, 75);
+    display_set_size(30, 75);
     srand(time(NULL));
 
     menu_item_t menu_main_items[] =

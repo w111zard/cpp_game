@@ -7,6 +7,7 @@ SOURCES += \
         algorithm.cpp \
         display.cpp \
         enemy.cpp \
+        file_system.cpp \
         game.cpp \
         game_objects_list.cpp \
         input.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     colors.h \
     display.hpp \
     enemy.h \
+    file_system.h \
     game.h \
     game_object_t.h \
     game_objects_list.h \
