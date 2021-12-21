@@ -174,7 +174,16 @@ void game_add_coins()
 {
     for (size_t i = 0; i < player_coins_to_win; ++i)
     {
-        level_add_randomly(COIN_GAME_OBJECT);
+        int x = rand() % (level_w - 2) + 1;
+        int y = rand() % (level_h - 2) + 1;
+
+        while (level_get(x, y).image != SPACE_IMAGE)
+        {
+            x = rand() % (level_w - 2) + 1;
+            y = rand() % (level_h - 2) + 1;
+        }
+
+        level_set(x, y, COIN_GAME_OBJECT);
     }
 }
 

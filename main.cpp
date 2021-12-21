@@ -19,83 +19,43 @@
 #include "menu.h"
 #include "file_system.h"
 
-bool start_game()
+bool start_game();
+bool exit_game();
+bool genereate_random_level();
+bool load_level_from_file();
+bool level_setup();
+
+int main()
 {
-    input_setup();
-    system("clear");
+    display_set_size(50, 100);
+    srand(time(NULL));
 
-    // GAME OBJECTS SETUP
-    game_add_coins();
-
-    game_add_enemies();
-
-    game_add_player();
-
-
-    display_level(level, level_h, level_w);
-
-    // GAME PROCESS
-    while (player_is_alive && (player_collected_coins < player_coins_to_win))
+    menu_item_t menu_main_items[] =
     {
-        game_move_player();
+      {.name = "New game", .handler = level_setup},
+      {.name = "Exit game", .handler = exit_game}
+    };
 
+    while (true)
+    {
+        input_setup();
         system("clear");
-        display_level(level, level_h, level_w);
-        game_show_stat();
-
-        game_move_enemies();
+        menu_enter(menu_main_items, 2);
     }
 
-    game_end();
-    input_restore();
-    level_free_memory();
-    enemies_free_memory();
-    system("clear");
-
-    // CLEARING CIN BUFFER
-    std::cout << "Press enter to continue..." << std::endl;
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    system("clear");
+    return 0;
 }
 
-bool exit_game()
+
+bool level_setup()
 {
-    exit(0);
-}
-
-bool genereate_random_level()
-{
-    input_restore();
-    system("clear");
-
-    std::cout << "Level height: ";
-    std::cin >> level_h;
-
-    if (level_h < 3 || level_h > 75)
+    menu_item_t menu_level_setup_items[] =
     {
-        std::cout << "Error: uncorrect level size" << std::endl;
-        sleep(3);
-        return genereate_random_level();
-    }
+     {.name = "Genereate random level", .handler = genereate_random_level},
+     {.name = "Load level from file", .handler = load_level_from_file}
+    };
 
-    std::cout << "Level width: ";
-    std::cin >> level_w;
-
-    if (level_w < 3 || level_w > 75)
-    {
-        std::cout << "Error: uncorrect level size" << std::endl;
-        sleep(3);
-        return genereate_random_level();
-    }
-
-    std::cout << "Enemies count: ";
-    std::cin >> enemies_count;
-
-    level_create();
-    level_generate();
-
-    return start_game();
+    menu_enter(menu_level_setup_items, 2);
 }
 
 bool load_level_from_file()
@@ -192,39 +152,86 @@ bool load_level_from_file()
 
     in.close();     // close file
 
-    enemies_count = 0;
+    return start_game();
+}
+
+bool genereate_random_level()
+{
+    input_restore();
+    system("clear");
+
+    std::cout << "Level height: ";
+    std::cin >> level_h;
+
+    if (level_h < 3 || level_h > 75)
+    {
+        std::cout << "Error: uncorrect level size" << std::endl;
+        sleep(3);
+        return genereate_random_level();
+    }
+
+    std::cout << "Level width: ";
+    std::cin >> level_w;
+
+    if (level_w < 3 || level_w > 75)
+    {
+        std::cout << "Error: uncorrect level size" << std::endl;
+        sleep(3);
+        return genereate_random_level();
+    }
+
+    level_create();
+    level_generate();
 
     return start_game();
 }
 
-bool level_setup()
+bool exit_game()
 {
-    menu_item_t menu_level_setup_items[] =
-    {
-     {.name = "Genereate random level", .handler = genereate_random_level},
-     {.name = "Load level from file", .handler = load_level_from_file}
-    };
-
-    menu_enter(menu_level_setup_items, 2);
+    exit(0);
 }
 
-int main()
+bool start_game()
 {
-    display_set_size(30, 75);
-    srand(time(NULL));
+    system("clear");
 
-    menu_item_t menu_main_items[] =
-    {
-      {.name = "New game", .handler = level_setup},
-      {.name = "Exit game", .handler = exit_game}
-    };
+    std::cout << "Enemies count: ";
+    std::cin >> enemies_count;
 
     input_setup();
+    system("clear");
 
-    while (true)
+    // GAME OBJECTS SETUP
+    game_add_coins();
+
+    game_add_enemies();
+
+    game_add_player();
+
+
+    display_level(level, level_h, level_w);
+
+    // GAME PROCESS
+    while (player_is_alive && (player_collected_coins < player_coins_to_win))
     {
-        menu_enter(menu_main_items, 2);
+        game_move_player();
+
+        system("clear");
+        display_level(level, level_h, level_w);
+        game_show_stat();
+
+        game_move_enemies();
     }
 
-    return 0;
+    game_end();
+    input_restore();
+    level_free_memory();
+    enemies_free_memory();
+    system("clear");
+
+    // CLEARING CIN BUFFER
+    std::cout << "Press enter to continue..." << std::endl;
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    system("clear");
 }
