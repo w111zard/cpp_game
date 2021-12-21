@@ -11,12 +11,12 @@ void menu_show(menu_item_t items[], size_t items_count, int cursor_pos)
     {
         if (i == cursor_pos)
         {
-            std::cout << ">" << items[i].name << "<" << std::endl;
+            std::cout << ">" << items[i].name << "<\n";
         }
 
         else
         {
-            std::cout << " " << items[i].name << std::endl;
+            std::cout << " " << items[i].name << " \n";
         }
     }
 }
