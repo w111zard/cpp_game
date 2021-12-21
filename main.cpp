@@ -4,6 +4,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <limits>
+#include <fstream>
 
 #include "display.hpp"
 #include "level.hpp"
@@ -91,6 +92,90 @@ bool load_level_from_file()
     std::string file_name;
     std::cin >> file_name;
 
+    std::ifstream in(file_name); // open file
+
+    std::string line;
+
+
+    size_t file_h = 0, file_w = 0;
+    if (in.is_open())
+    {
+        getline(in, line);
+        file_w = line.length();
+
+        if (file_w < 3) // expection error
+        {
+            std::cout << "Error: Level width must be > 3";
+            sleep(3);
+            return load_level_from_file();
+        }
+
+        in.seekg(0);
+        while (getline(in, line))
+        {
+            if (line.length() != file_w)
+            {
+                std::cout << "Error: level width must be same in all rows";
+                sleep(3);
+                return load_level_from_file();
+            }
+            ++file_h;
+        }
+
+        if (file_h < 3)
+        {
+            std::cout << "Error: level height must be > 3";
+            sleep(3);
+            return load_level_from_file();
+        }
+
+        level_h = file_h;
+        level_w = file_w;
+
+        level_create();
+
+        in.clear();
+        in.seekg(0);
+        for (size_t y = 0; y < level_h; ++y)
+        {
+            getline(in, line);
+
+            for (size_t x = 0; x < level_w; ++x)
+            {
+               char file_img = line[x];
+               game_object_t obj;
+
+               if (file_img == WALL_IMAGE)
+               {
+                   obj = WALL_GAME_OBJECT;
+               }
+
+               else if(file_img == STONE_IMAGE)
+               {
+                   obj = STONE_GAME_OBJECT;
+               }
+
+               else
+               {
+                   obj = SPACE_GAME_OBJECT;
+               }
+
+               level[y][x] = obj;
+            }
+        }
+    }
+
+    else
+    {
+        std::cout << "Error: can't open the file. Try again after 3 seconds..." << "\n";
+        sleep(3);
+        return load_level_from_file();
+    }
+
+    in.close();     // close file
+
+    enemies_count = 0;
+
     return start_game();
 }
 
@@ -107,7 +192,7 @@ bool level_setup()
 
 int main()
 {
-    display_set_size(150, 150);
+    display_set_size(75, 75);
     srand(time(NULL));
 
     menu_item_t menu_main_items[] =
