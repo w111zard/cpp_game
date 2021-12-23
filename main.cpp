@@ -61,22 +61,17 @@ bool level_setup()
 
 bool load_level_from_file()
 {
-    input_restore();
     system("clear");
 
+    std::vector<std::string> files;
+
     // argument "." means that we use current directory
-    std::vector<std::string> files = get_files(".");
+    files = get_files(".");
 
-    for (std::string file : files)
-    {
-        std::cout << file << std::endl;
-    }
+    std::string selected_file = menu_enter(files);
 
-    std::cout << "\n\nFile name: ";
-    std::string file_name;
-    std::cin >> file_name;
+    std::ifstream in(selected_file); // open file
 
-    std::ifstream in(file_name); // open file
 
     std::string line;
 

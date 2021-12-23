@@ -8,11 +8,10 @@
 
 #include "file_system.h"
 
-
-std::vector<std::string> files;
-
 std::vector<std::string> get_files(std::string dir)
 {
+    std::vector<std::string> files;
+
     DIR *dp;
     struct dirent *dirp;
 
