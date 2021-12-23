@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <limits>
 #include <fstream>
+#include <vector>
 
 #include "display.hpp"
 #include "level.hpp"
@@ -63,12 +64,12 @@ bool load_level_from_file()
     input_restore();
     system("clear");
 
-    // . means to show files from current directory
-    char **result = file_system_show_txt_files(".");
+    // argument "." means that we use current directory
+    std::vector<std::string> files = get_files(".");
 
-    for (int index = 0; result[index] != NULL; ++index)
+    for (std::string file : files)
     {
-        std::cout << result[index] << std::endl;
+        std::cout << file << std::endl;
     }
 
     std::cout << "\n\nFile name: ";

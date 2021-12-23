@@ -8,16 +8,11 @@
 
 #include "file_system.h"
 
-const size_t STEP = 10;
 
-std::string files[FILE_SYSTEM_MAX_FILES_COUNT];
+std::vector<std::string> files;
 
-char **file_system_show_txt_files(std::string dir)
+std::vector<std::string> get_files(std::string dir)
 {
-    size_t size = STEP;
-    char **result = (char**) malloc(size * sizeof(char*));
-    size_t index = 0;
-
     DIR *dp;
     struct dirent *dirp;
 
@@ -42,27 +37,11 @@ char **file_system_show_txt_files(std::string dir)
 
         if (std::string(file_type) == ".txt")
         {
-            result[index] = (char*) malloc(file_name.length() * sizeof (char));
-            memcpy(result[index], file_name.c_str(), file_name.length());
-            ++index;
-
-            if (index == size)
-            {
-                size += STEP;
-                result = (char**) realloc(result, size * sizeof(char*));
-            }
+            files.push_back(file_name);
         }
     }
 
     closedir(dp);
 
-    if (index == size)
-    {
-        size++;
-        result = (char**) realloc(result, size * sizeof(char*));
-    }
-
-    result[index] = NULL;
-
-    return result;
+    return files;
 }
