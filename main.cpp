@@ -194,6 +194,7 @@ bool exit_game()
 
 bool start_game()
 {
+    input_restore();
     system("clear");
 
     std::cout << "Enemies count: ";
