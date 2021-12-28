@@ -5,6 +5,8 @@
 #include "menu.h"
 #include "input.hpp"
 
+std::vector<std::string> menu_items;
+
 void menu_show(std::vector<std::string> items, size_t selected_index)
 {
     for (size_t i = 0; i < items.size(); ++i)

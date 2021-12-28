@@ -27,23 +27,23 @@ int main()
     display_set_size(50, 100);
     srand(time(NULL));
 
-    std::vector<std::string> menu_main_items {"Play", "Exit"};
-
     while (true)
     {
         system("clear");
 
-        std::string menu_selected_items = menu_enter(menu_main_items);
+        menu_items = {"Play", "Exit"};
+
+        std::string menu_selected_items = menu_enter(menu_items);
 
         // play
-        if (menu_selected_items == menu_main_items[0])
+        if (menu_selected_items == menu_items[0])
         {
-            std::vector<std::string> menu_second_items {"Generate New Level", "Load Level From File"};
+            menu_items  = {"Generate New Level", "Load Level From File"};
 
-            std::string menu_selected_item = menu_enter(menu_second_items);
+            std::string menu_selected_item = menu_enter(menu_items);
 
             // genereate new level
-            if (menu_selected_item == menu_second_items[0])
+            if (menu_selected_item == menu_items[0])
             {
                 system("clear");
                 input_restore();
@@ -62,7 +62,7 @@ int main()
             }
 
             // load level from file
-            else if (menu_selected_item == menu_second_items[1])
+            else if (menu_selected_item == menu_items[1])
             {
                 // argument "." means that we use current directory
                 std::vector<std::string> files_list = get_files(".");
@@ -95,7 +95,7 @@ int main()
         }
 
         // exit
-        else if(menu_selected_items == menu_main_items[1])
+        else if(menu_selected_items == menu_items[1])
         {
             exit(0);
         }
@@ -108,7 +108,6 @@ void start_game()
 {
     system("clear");
     input_restore();
-    std::cin.clear();
 
     std::cout << "Enemies count: ";
     std::cin >> enemies_count;
