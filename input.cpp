@@ -6,22 +6,27 @@
 
 #include "input.hpp"
 
+bool INPUT_SETUP_FLAG = false;
+
 struct termios oldt, newt;
 
 void input_setup()
-{
+{   
     fcntl(0, F_SETFL, fcntl(0, F_GETFL) | O_NONBLOCK);
     tcgetattr( STDIN_FILENO, &oldt );
     newt = oldt;
     newt.c_lflag &= ~( ICANON | ECHO );
     tcsetattr( STDIN_FILENO, TCSANOW, &newt );
 
+    INPUT_SETUP_FLAG = true;
 }
 
 void input_restore()
 {
     fcntl(0, F_SETFL, fcntl(0, F_GETFL) & ~O_NONBLOCK);
     tcsetattr( STDIN_FILENO, TCSANOW, &oldt );
+
+    INPUT_SETUP_FLAG = false;
 }
 
 int get_key()

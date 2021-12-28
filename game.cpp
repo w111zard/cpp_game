@@ -123,7 +123,7 @@ void game_move_enemies()
     }
 }
 
-void game_add_enemies()
+void game_add_enemies(size_t level_h, size_t level_w)
 {
     enemies_pos = new vector_2d_t[enemies_count];
     enemies_movement_directions = new vector_2d_t[enemies_count];
@@ -151,7 +151,7 @@ void game_add_enemies()
     }
 }
 
-void game_add_player()
+void game_add_player(size_t level_h, size_t level_w)
 {
     player_setup();
 
@@ -170,7 +170,7 @@ void game_add_player()
     player_is_alive = true;
 }
 
-void game_add_coins()
+void game_add_coins(size_t level_h, size_t level_w)
 {
     for (size_t i = 0; i < player_coins_to_win; ++i)
     {

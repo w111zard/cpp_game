@@ -1,107 +1,88 @@
-#include <string>
+ #include <string>
 #include <iostream>
 #include <vector>
 
 #include "menu.h"
 #include "input.hpp"
 
-
-void menu_show(menu_item_t items[], size_t items_count, int cursor_pos)
-{
-    for (size_t i = 0; i < items_count; ++i)
-    {
-        if (i == cursor_pos)
-        {
-            std::cout << ">" << items[i].name << "<\n";
-        }
-
-        else
-        {
-            std::cout << " " << items[i].name << " \n";
-        }
-    }
-}
-
-void menu_show(std::vector<std::string> items, int cursor_pos)
+void menu_show(std::vector<std::string> items, size_t selected_index)
 {
     for (size_t i = 0; i < items.size(); ++i)
     {
-        if (cursor_pos == i)
+        if (i ==  selected_index)
         {
             std::cout << ">" << items[i] << "<" << std::endl;
         }
 
         else
         {
-            std::cout << " " << items[i] << std::endl;
+            std::cout << items[i] << std::endl;
         }
     }
 }
 
-bool menu_enter(menu_item_t items[], size_t size)
+void menu_cursor_move(size_t &cursor_position, size_t items_size, int delta)
 {
-    int cursor_pos = 0;
-
-    while (true)
+    if (delta == -1)
     {
-        menu_show(items, size, cursor_pos);
-
-        int key = get_key();
-
-        if (key == INPUT_ARROW_UP)
+        if (cursor_position == 0)
         {
-            if (cursor_pos - 1 >= 0)
-            {
-                --cursor_pos;
-            }
+            cursor_position = items_size - 1;
         }
 
-        else if(key == INPUT_ARROW_DOWN)
+        else
         {
-            if (cursor_pos + 1 < size)
-            {
-                ++cursor_pos;
-            }
+            --cursor_position;
+        }
+    }
+
+    else
+    {
+        if (cursor_position == items_size - 1)
+        {
+            cursor_position = 0;
         }
 
-        else if(key == INPUT_ENTER)
+        else
         {
-            return items[cursor_pos].handler();
+            ++cursor_position;
         }
-
-        system("clear");
     }
 }
 
 std::string menu_enter(std::vector<std::string> items)
 {
-    int cursor_pos = 0;
+    size_t selected_index = 0;
+
+    if (!INPUT_SETUP_FLAG)
+    {
+        input_setup();
+    }
 
     while (true)
     {
-        menu_show(items, cursor_pos);
+        menu_show(items, selected_index);
 
         int key = get_key();
 
-        if (key == INPUT_ARROW_UP)
+        switch (key)
         {
-            if (cursor_pos - 1 >= 0)
+            case INPUT_ARROW_UP:
             {
-                --cursor_pos;
+                menu_cursor_move(selected_index, items.size(), -1);
+                break;
             }
-        }
 
-        else if(key == INPUT_ARROW_DOWN)
-        {
-            if (cursor_pos + 1 < items.size())
+            case INPUT_ARROW_DOWN:
             {
-                ++cursor_pos;
+               menu_cursor_move(selected_index, items.size(), 1);
+               break;
             }
-        }
 
-        else if(key == INPUT_ENTER)
-        {
-            return items[cursor_pos];
+            case INPUT_ENTER:
+            {
+                return items[selected_index];
+            }
         }
 
         system("clear");

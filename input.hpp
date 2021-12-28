@@ -1,6 +1,8 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
+extern bool INPUT_SETUP_FLAG;
+
 const int INPUT_ARROW_LEFT = 68;
 const int INPUT_ARROW_RIGHT = 67;
 const int INPUT_ARROW_UP = 65;

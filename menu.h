@@ -5,18 +5,9 @@
 #include <iostream>
 #include <vector>
 
-struct MenuItem
-{
-    std::string name;
-    bool (*handler)();
-};
-
-typedef struct MenuItem menu_item_t;
-
-void menu_show(menu_item_t items[], size_t items_count, int cursor_pos);
-void menu_show(std::vector<std::string> items, int cursor_pos);
-
-bool menu_enter(menu_item_t items[], size_t size);
+void menu_show(std::vector<std::string> items, size_t selected_index);
+void menu_cursor_move(int &cursor_position, size_t items_size, int delta);
 std::string menu_enter(std::vector<std::string> items);
+
 
 #endif // MENU_H

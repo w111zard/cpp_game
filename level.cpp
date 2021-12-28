@@ -1,43 +1,13 @@
 #include <string>
 #include <unistd.h>
+#include <vector>
 
 #include "level.hpp"
 #include "vector_2d.h"
 #include "game_object_t.h"
 #include "game_objects_list.h"
 
-game_object_t **level;
-size_t level_h;
-size_t level_w;
-
-void level_set_size(size_t h, size_t w)
-{
-    level_h = h;
-    level_w = w;
-}
-
-
-void level_create()
-{
-    level = new game_object_t*[level_h];
-
-    for (size_t i = 0; i < level_h; ++i)
-    {
-        level[i] = new game_object_t[level_w];
-    }
-}
-
-void level_free_memory()
-{
-    for (size_t i = 0; i < level_h; ++i)
-    {
-        delete[] level[i];
-    }
-
-    delete[] level;
-    level = nullptr;
-}
-
+std::vector<std::vector<game_object_t>> level;
 
 // LEVEL_GET
 game_object_t level_get(vector_2d_t pos)
@@ -65,9 +35,9 @@ void level_set(size_t x, size_t y, game_object_t obj)
 // LEVEL_FILL
 void level_fill(game_object_t obj)
 {
-    for (size_t y = 0; y < level_h; ++y)
+    for (size_t y = 0; y < level.size(); ++y)
     {
-        for (size_t x = 0; x < level_w; ++x)
+        for (size_t x = 0; x < level[y].size(); ++x)
         {
             level_set(x, y, obj);
         }
@@ -117,6 +87,8 @@ void level_generate()
 {
     srand(time(NULL));
 
+    size_t level_h = level.size(), level_w = level[0].size();
+
     for (size_t y = 0; y < level_h; ++y)
     {
         for (size_t x = 0; x < level_w; ++x)
@@ -158,15 +130,79 @@ void level_generate()
 // LEVEL_ADD_RANDOMLY
 void level_add_randomly(game_object_t obj)
 {
-    int x = rand() % (level_w - 2) + 1;
-    int y = rand() % (level_h - 2) + 1;
+    int x = rand() % (level[0].size() - 2) + 1;
+    int y = rand() % (level.size() - 2) + 1;
 
     Vector2D pos = {x, y};
 
     level_set(pos, obj);
 }
 
-bool level_load()
+bool level_load(std::vector<std::string> data)
 {
+    size_t data_h = data.size();
 
+    if (data_h < 3)
+    {
+        return false;
+    }
+
+    size_t data_w = data[0].size();
+    if (data_w < 3)
+    {
+        return false;
+    }
+
+    if ((data_h < 3) || (data_w < 3))
+    {
+        return false;
+    }
+
+    for (size_t i = 1; i < data_h; ++i)
+    {
+        if (data[i].length() != data_w)
+        {
+            return false;
+        }
+    }
+
+    level_resize(data_h, data_w);
+
+    for (size_t y = 0; y < data_h; ++y)
+    {
+        for (size_t x = 0; x < data_w; ++x)
+        {
+            char image = data[y][x];
+            game_object_t obj;
+
+            if (image == WALL_IMAGE)
+            {
+                obj = WALL_GAME_OBJECT;
+            }
+
+            else if (image == STONE_IMAGE)
+            {
+                obj = STONE_GAME_OBJECT;
+            }
+
+            else
+            {
+                obj = SPACE_GAME_OBJECT;
+            }
+
+            level[y][x] = obj;
+        }
+    }
+
+    return true;
+}
+
+void level_resize(size_t height, size_t width)
+{
+    level.resize(height);
+
+    for (size_t i = 0; i < height; ++i)
+    {
+        level[i].resize(width);
+    }
 }

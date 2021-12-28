@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include <fstream>
 
 #include "file_system.h"
 
@@ -43,4 +44,25 @@ std::vector<std::string> get_files(std::string dir)
     closedir(dp);
 
     return files;
+}
+
+std::vector<std::string> file_system_read(std::string file_name)
+{
+    std::vector<std::string> result;
+
+    std::ifstream in(file_name);
+
+    if (in.is_open())
+    {
+        std::string file_line;
+
+        while (getline(in, file_line))
+        {
+            result.push_back(file_line);
+        }
+    }
+
+    in.close();
+
+    return result;
 }

@@ -2,13 +2,12 @@
 #define LEVEL_HPP
 
 #include <string>
+#include <vector>
+
 #include "vector_2d.h"
 #include "game_object_t.h"
 
-extern game_object_t **level;
-
-extern size_t level_h;
-extern size_t level_w;
+extern std::vector<std::vector<game_object_t>> level;
 
 void level_set_size(size_t h, size_t w);
 void level_create();
@@ -36,6 +35,8 @@ void level_add_randomly(game_object_t obj);
 
 void level_fill(game_object_t obj);
 
-bool level_load();
+bool level_load(std::vector<std::string>);
+
+void level_resize(size_t height, size_t width);
 
 #endif // LEVEL_HPP

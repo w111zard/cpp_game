@@ -12,9 +12,9 @@
 
 void game_move_player();
 void game_move_enemies();
-void game_add_player();
-void game_add_enemies();
-void game_add_coins();
+void game_add_player(size_t, size_t);
+void game_add_enemies(size_t, size_t);
+void game_add_coins(size_t, size_t);
 void game_end();
 void game_show_stat();
 void game_passed_screen();

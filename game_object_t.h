@@ -9,8 +9,7 @@
 struct GameObject
 {
     char image;
-    int foreground_color;
-    int background_color;
+    int color;
 };
 
 typedef GameObject game_object_t;

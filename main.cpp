@@ -20,182 +20,95 @@
 #include "menu.h"
 #include "file_system.h"
 
-bool start_game();
-bool exit_game();
-bool genereate_random_level();
-bool load_level_from_file();
-bool level_setup();
+void start_game();
 
 int main()
 {
     display_set_size(50, 100);
     srand(time(NULL));
 
-    menu_item_t menu_main_items[] =
-    {
-      {.name = "New game", .handler = level_setup},
-      {.name = "Exit game", .handler = exit_game}
-    };
+    std::vector<std::string> menu_main_items {"Play", "Exit"};
 
     while (true)
     {
-        input_setup();
         system("clear");
-        menu_enter(menu_main_items, 2);
+
+        std::string menu_selected_items = menu_enter(menu_main_items);
+
+        // play
+        if (menu_selected_items == menu_main_items[0])
+        {
+            std::vector<std::string> menu_second_items {"Generate New Level", "Load Level From File"};
+
+            std::string menu_selected_item = menu_enter(menu_second_items);
+
+            // genereate new level
+            if (menu_selected_item == menu_second_items[0])
+            {
+                system("clear");
+                input_restore();
+
+                size_t level_h, level_w;
+
+                std::cout << "Level height: ";
+                std::cin >> level_h;
+
+                std::cout << "Level width: ";
+                std::cin >> level_w;
+
+                level_resize(level_h, level_w);
+
+                level_generate();
+            }
+
+            // load level from file
+            else if (menu_selected_item == menu_second_items[1])
+            {
+                // argument "." means that we use current directory
+                std::vector<std::string> files_list = get_files(".");
+
+                while (true)
+                {
+                    system("clear");
+                    input_setup();
+
+                    std::string file_name = menu_enter(files_list);
+
+                    std::vector<std::string> file_data = file_system_read(file_name);
+
+                    if (level_load(file_data))
+                    {
+                        start_game();
+                    }
+
+                    else
+                    {
+                        input_restore();
+                        std::cout << "Error: can't open the file " << file_name << std::endl;
+                        std::cout << "Press any  key to repeat..." << std::endl;
+                        get_key();
+                    }
+                }
+            }
+
+            start_game();
+        }
+
+        // exit
+        else if(menu_selected_items == menu_main_items[1])
+        {
+            exit(0);
+        }
     }
 
     return 0;
 }
 
-
-bool level_setup()
-{
-    menu_item_t menu_level_setup_items[] =
-    {
-     {.name = "Genereate random level", .handler = genereate_random_level},
-     {.name = "Load level from file", .handler = load_level_from_file}
-    };
-
-    menu_enter(menu_level_setup_items, 2);
-}
-
-bool load_level_from_file()
+void start_game()
 {
     system("clear");
-
-    std::vector<std::string> files;
-
-    // argument "." means that we use current directory
-    files = get_files(".");
-
-    std::string selected_file = menu_enter(files);
-
-    std::ifstream in(selected_file); // open file
-
-
-    std::string line;
-
-
-    size_t file_h = 0, file_w = 0;
-    if (in.is_open())
-    {
-        getline(in, line);
-        file_w = line.length();
-
-        if (file_w < 3) // expection error
-        {
-            std::cout << "Error: Level width must be > 3" << std::endl;
-            sleep(3);
-            return load_level_from_file();
-        }
-
-        in.seekg(0);
-        while (getline(in, line))
-        {
-            if (line.length() != file_w)
-            {
-                std::cout << "Error: level width must be same in all rows" << std::endl;
-                sleep(3);
-                return load_level_from_file();
-            }
-            ++file_h;
-        }
-
-        if (file_h < 3)
-        {
-            std::cout << "Error: level height must be > 3" << std::endl;
-            sleep(3);
-            return load_level_from_file();
-        }
-
-        level_h = file_h;
-        level_w = file_w;
-
-        level_create();
-
-        in.clear();
-        in.seekg(0);
-        for (size_t y = 0; y < level_h; ++y)
-        {
-            getline(in, line);
-
-            for (size_t x = 0; x < level_w; ++x)
-            {
-               char file_img = line[x];
-               game_object_t obj;
-
-               if (file_img == WALL_IMAGE)
-               {
-                   obj = WALL_GAME_OBJECT;
-               }
-
-               else if(file_img == STONE_IMAGE)
-               {
-                   obj = STONE_GAME_OBJECT;
-               }
-
-               else
-               {
-                   obj = SPACE_GAME_OBJECT;
-               }
-
-               level[y][x] = obj;
-            }
-        }
-    }
-
-    else
-    {
-        std::cout << "Error: can't open the file. Try again after 3 seconds..." << "\n";
-        sleep(3);
-        return load_level_from_file();
-    }
-
-    in.close();     // close file
-
-    return start_game();
-}
-
-bool genereate_random_level()
-{
     input_restore();
-    system("clear");
-
-    std::cout << "Level height: ";
-    std::cin >> level_h;
-
-    if (level_h < 3 || level_h > 75)
-    {
-        std::cout << "Error: uncorrect level size" << std::endl;
-        sleep(3);
-        return genereate_random_level();
-    }
-
-    std::cout << "Level width: ";
-    std::cin >> level_w;
-
-    if (level_w < 3 || level_w > 75)
-    {
-        std::cout << "Error: uncorrect level size" << std::endl;
-        sleep(3);
-        return genereate_random_level();
-    }
-
-    level_create();
-    level_generate();
-
-    return start_game();
-}
-
-bool exit_game()
-{
-    exit(0);
-}
-
-bool start_game()
-{
-    input_restore();
-    system("clear");
+    std::cin.clear();
 
     std::cout << "Enemies count: ";
     std::cin >> enemies_count;
@@ -204,14 +117,14 @@ bool start_game()
     system("clear");
 
     // GAME OBJECTS SETUP
-    game_add_coins();
+    game_add_coins(level.size(), level[0].size());
 
-    game_add_enemies();
+    game_add_enemies(level.size(), level[0].size());
 
-    game_add_player();
+    game_add_player(level.size(), level[0].size());
 
 
-    display_level(level, level_h, level_w);
+    display_level(level);
 
     // GAME PROCESS
     while (player_is_alive && (player_collected_coins < player_coins_to_win))
@@ -219,7 +132,7 @@ bool start_game()
         game_move_player();
 
         system("clear");
-        display_level(level, level_h, level_w);
+        display_level(level);
         game_show_stat();
 
         game_move_enemies();
@@ -227,7 +140,6 @@ bool start_game()
 
     game_end();
     input_restore();
-    level_free_memory();
     enemies_free_memory();
     system("clear");
 
